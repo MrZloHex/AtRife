@@ -9,6 +9,7 @@ use arduino_mega2560::prelude::*;
 fn main() -> ! {
     let dp = arduino_mega2560::Peripherals::take().unwrap();
 
+    let mut delay = arduino_mega2560::Delay::new();
     let mut pins = arduino_mega2560::Pins::new(
         dp.PORTA,
         dp.PORTB,
@@ -59,11 +60,85 @@ fn main() -> ! {
     col_6.set_low().void_unwrap();
     col_7.set_low().void_unwrap();
 
+    let mut display: [[u8; 8]; 8] = [
+        [0,1,0,1,0,1,0,1],
+        [1,0,1,0,1,0,1,0],
+        [0,1,0,1,0,1,0,1],
+        [1,0,1,0,1,0,1,0],
+        [0,1,0,1,0,1,0,1],
+        [1,0,1,0,1,0,1,0],
+        [0,1,0,1,0,1,0,1],
+        [1,0,1,0,1,0,1,0],
+    ];
 
+    let mut count: i16 = 0;
     loop {
-        row_d.set_low().void_unwrap();
-        row_e.set_low().void_unwrap();
-        col_3.set_high().void_unwrap();
-        col_4.set_high().void_unwrap();
+        for (r, row) in display.iter().enumerate() {
+            for (c, col) in row.iter().enumerate() {
+                if *col == 1 {
+                    if c == 0 {col_0.set_high().void_unwrap();}
+                    else if c == 1 {col_1.set_high().void_unwrap();}
+                    else if c == 2 {col_2.set_high().void_unwrap();}
+                    else if c == 3 {col_3.set_high().void_unwrap();}
+                    else if c == 4 {col_4.set_high().void_unwrap();}
+                    else if c == 5 {col_5.set_high().void_unwrap();}
+                    else if c == 6 {col_6.set_high().void_unwrap();}
+                    else if c == 7 {col_7.set_high().void_unwrap();}
+
+                    if r == 0 {row_a.set_low().void_unwrap();}
+                    else if r == 1 {row_b.set_low().void_unwrap();}
+                    else if r == 2 {row_c.set_low().void_unwrap();}
+                    else if r == 3 {row_d.set_low().void_unwrap();}
+                    else if r == 4 {row_e.set_low().void_unwrap();}
+                    else if r == 5 {row_f.set_low().void_unwrap();}
+                    else if r == 6 {row_g.set_low().void_unwrap();}
+                    else if r == 7 {row_h.set_low().void_unwrap();}
+                }
+                row_a.set_high().void_unwrap();
+                row_b.set_high().void_unwrap();
+                row_c.set_high().void_unwrap();
+                row_d.set_high().void_unwrap();
+                row_e.set_high().void_unwrap();
+                row_f.set_high().void_unwrap();
+                row_g.set_high().void_unwrap();
+                row_h.set_high().void_unwrap();
+
+                col_0.set_low().void_unwrap();
+                col_1.set_low().void_unwrap();
+                col_2.set_low().void_unwrap();
+                col_3.set_low().void_unwrap();
+                col_4.set_low().void_unwrap();
+                col_5.set_low().void_unwrap();
+                col_6.set_low().void_unwrap();
+                col_7.set_low().void_unwrap();
+
+            }
+        }
+        if count == 0 {
+            display = [
+                [1,0,1,0,1,0,1,0],
+                [0,1,0,1,0,1,0,1],
+                [1,0,1,0,1,0,1,0],
+                [0,1,0,1,0,1,0,1],
+                [1,0,1,0,1,0,1,0],
+                [0,1,0,1,0,1,0,1],
+                [1,0,1,0,1,0,1,0],
+                [0,1,0,1,0,1,0,1],
+            ];
+        }
+        else if count == 500 {
+            display = [
+                [0,1,0,1,0,1,0,1],
+                [1,0,1,0,1,0,1,0],
+                [0,1,0,1,0,1,0,1],
+                [1,0,1,0,1,0,1,0],
+                [0,1,0,1,0,1,0,1],
+                [1,0,1,0,1,0,1,0],
+                [0,1,0,1,0,1,0,1],
+                [1,0,1,0,1,0,1,0],
+            ];
+            count = -500;
+        }
+        count += 1;
     }
 }
