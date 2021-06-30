@@ -71,6 +71,7 @@ fn main() -> ! {
         [0,0,0,0,0,0,0,0],
     ];
 
+    
     let mut count: i16 = 0;
     loop {
         for (r, row) in display.iter().enumerate() {
