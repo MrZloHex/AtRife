@@ -7,9 +7,22 @@ use arduino_mega2560::prelude::*;
 
 fn make_game(in_grid: &[[u8; 8]; 8]) -> [[u8;8];8] {
     let mut out_grid: [[u8;8];8] = [[0;8];8];
-    for row in (*in_grid).iter() {
-        for col in row.iter() {
+    for (r, row) in (*in_grid).iter().enumerate() {
+        for (c, item) in row.iter().enumerate() {
+            if item == 1 {
+                // ALIVE
+                match (*in_grid).get_mut(r-1) {
+                    Some(x) => { 
+                        let _qwe =  x.get_mut(c);
+                    }
+                    None => { }
+                }
+            }
+            else if item == 0 {
+                // DEAD
 
+            }
+            else {continue}
         }
     }
 
