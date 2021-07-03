@@ -7,97 +7,102 @@ use arduino_mega2560::prelude::*;
 
 fn make_game(in_grid: [[u8; 8]; 8]) -> [[u8;8];8] {
     let mut out_grid: [[u8;8];8] = [[0;8];8];
-    for (r, row) in in_grid.iter().enumerate() {
-        for (c, item) in row.iter().enumerate() {
+    let mut r: i8 = 0;
+    for row in in_grid.iter() {
+        let mut c: i8 = 0;
+        for item in row.iter() {
             let mut neighbor: u8 = 0;
 
             if *item == 1 {
                 // ALIVE
-                match in_grid.get(r-1) {
-                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r-1) as usize) {
+                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r-1) {
-                    Some(col) => { match col.get(c) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r-1) as usize) {
+                    Some(col) => { match col.get((c) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r-1) {
-                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r-1) as usize) {
+                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r) {
-                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r) as usize) {
+                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r) {
-                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r) as usize) {
+                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r+1) {
-                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r+1) as usize) {
+                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r+1) {
-                    Some(col) => { match col.get(c) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r+1) as usize) {
+                    Some(col) => { match col.get((c) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r+1) {
-                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r+1) as usize) {
+                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
 
                 if neighbor == 2 || neighbor == 3 {
-                    out_grid[r][c] = 1;
+                    out_grid[r as usize][c as usize] = 1;
                 }
                 else {
-                    out_grid[r][c] = 0;
+                    out_grid[r as usize][c as usize] = 0;
                 }
             }
             else if *item == 0 {
                 // DEAD
 
-                match in_grid.get(r-1) {
-                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r-1) as usize) {
+                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r-1) {
-                    Some(col) => { match col.get(c) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r-1) as usize) {
+                    Some(col) => { match col.get((c) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r-1) {
-                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r-1) as usize) {
+                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r) {
-                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r) as usize) {
+                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r) {
-                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r) as usize) {
+                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r+1) {
-                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r+1) as usize) {
+                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r+1) {
-                    Some(col) => { match col.get(c) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r+1) as usize) {
+                    Some(col) => { match col.get((c) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
-                match in_grid.get(r+1) {
-                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                match in_grid.get((r+1) as usize) {
+                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
                 }
 
                 if neighbor == 3 {
-                    out_grid[r][c] = 1;
+                    out_grid[r as usize][c as usize] = 1;
                 }
                 else {
-                    out_grid[r][c] = 0;
+                    out_grid[r as usize][c as usize] = 0;
                 }
             }
             else {continue}
+
+            c += 1;
         }
+        r += 1;
     }
 
     out_grid
