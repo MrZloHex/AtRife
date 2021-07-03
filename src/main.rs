@@ -9,13 +9,48 @@ fn make_game(in_grid: [[u8; 8]; 8]) -> [[u8;8];8] {
     let mut out_grid: [[u8;8];8] = [[0;8];8];
     for (r, row) in in_grid.iter().enumerate() {
         for (c, item) in row.iter().enumerate() {
+            let mut neighbor: u8 = 0;
+
             if *item == 1 {
                 // ALIVE
                 match in_grid.get(r-1) {
-                    Some(x) => { 
-                        let _qwe =  x.get(c);
-                    }
+                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
                     None => { }
+                }
+                match in_grid.get(r-1) {
+                    Some(col) => { match col.get(c) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r-1) {
+                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r) {
+                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r) {
+                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r+1) {
+                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r+1) {
+                    Some(col) => { match col.get(c) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r+1) {
+                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+
+                if neighbor == 2 || neighbor == 3 {
+                    out_grid[r][c] = 1;
+                }
+                else {
+                    out_grid[r][c] = 0;
                 }
             }
             else if *item == 0 {
