@@ -56,6 +56,45 @@ fn make_game(in_grid: [[u8; 8]; 8]) -> [[u8;8];8] {
             else if *item == 0 {
                 // DEAD
 
+                match in_grid.get(r-1) {
+                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r-1) {
+                    Some(col) => { match col.get(c) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r-1) {
+                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r) {
+                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r) {
+                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r+1) {
+                    Some(col) => { match col.get(c-1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r+1) {
+                    Some(col) => { match col.get(c) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+                match in_grid.get(r+1) {
+                    Some(col) => { match col.get(c+1) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
+                    None => { }
+                }
+
+                if neighbor == 3 {
+                    out_grid[r][c] = 1;
+                }
+                else {
+                    out_grid[r][c] = 0;
+                }
             }
             else {continue}
         }
