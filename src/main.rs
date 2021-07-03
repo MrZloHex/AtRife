@@ -5,20 +5,20 @@ extern crate panic_halt;
 use arduino_mega2560::prelude::*;
 
 
-fn make_game(in_grid: &[[u8; 8]; 8]) -> [[u8;8];8] {
+fn make_game(in_grid: [[u8; 8]; 8]) -> [[u8;8];8] {
     let mut out_grid: [[u8;8];8] = [[0;8];8];
-    for (r, row) in (*in_grid).iter().enumerate() {
+    for (r, row) in in_grid.iter().enumerate() {
         for (c, item) in row.iter().enumerate() {
-            if item == 1 {
+            if *item == 1 {
                 // ALIVE
-                match (*in_grid).get_mut(r-1) {
+                match in_grid.get(r-1) {
                     Some(x) => { 
-                        let _qwe =  x.get_mut(c);
+                        let _qwe =  x.get(c);
                     }
                     None => { }
                 }
             }
-            else if item == 0 {
+            else if *item == 0 {
                 // DEAD
 
             }
@@ -33,7 +33,7 @@ fn make_game(in_grid: &[[u8; 8]; 8]) -> [[u8;8];8] {
 fn main() -> ! {
     let dp = arduino_mega2560::Peripherals::take().unwrap();
 
-    let mut delay = arduino_mega2560::Delay::new();
+    // let mut delay = arduino_mega2560::Delay::new();
     let mut pins = arduino_mega2560::Pins::new(
         dp.PORTA,
         dp.PORTB,
@@ -141,7 +141,7 @@ fn main() -> ! {
             }
         }
         if count == 0 {
-            display_2 = make_game(&display);
+            display_2 = make_game(display.clone());
         }
         else if count == 1000 {
             display = display_2.clone();
