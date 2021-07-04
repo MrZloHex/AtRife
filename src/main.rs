@@ -9,6 +9,9 @@ use arduino_mega2560::prelude::*;
 mod game_of_life;
 use game_of_life::Game;
 
+mod std_config;
+use std_config::Config;
+
 #[arduino_mega2560::entry]
 fn main() -> ! {
     let dp = arduino_mega2560::Peripherals::take().unwrap();
@@ -75,7 +78,8 @@ fn main() -> ! {
         [0,0,0,0,0,0,0,0],
     ];
 
-    let mut game = Game::new(start);
+    let config = Config::new();
+    let mut game = Game::new(config.get_fumarole());
 
     let mut display: [[u8; 8]; 8] = game.get_field();
 

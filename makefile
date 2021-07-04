@@ -19,7 +19,7 @@ AVR_FL		:= -O ihex
 UPLOADER	:= avrdude
 UPL_FL		:= -v -p $(CPU) -c $(PROG) -P $(PORT) -b $(BAUD) -F -D -U flash:w
 
-all: clean compile link load
+all: compile link load
 
 clean:
 	$(PACMAN) $(CLEAN)
