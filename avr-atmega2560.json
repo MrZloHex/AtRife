@@ -1,4 +1,3 @@
-
 {
   "arch": "avr",
   "atomic-cas": false,
