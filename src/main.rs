@@ -6,109 +6,8 @@
 extern crate panic_halt;
 use arduino_mega2560::prelude::*;
 
-
-fn make_game(in_grid: [[u8; 8]; 8]) -> [[u8;8];8] {
-    let mut out_grid: [[u8;8];8] = [[0;8];8];
-    let mut r: i8 = 0;
-    for row in in_grid.iter() {
-        let mut c: i8 = 0;
-        for item in row.iter() {
-            let mut neighbor: u8 = 0;
-
-            if *item == 1 {
-                // ALIVE
-                match in_grid.get((r-1) as usize) {
-                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r-1) as usize) {
-                    Some(col) => { match col.get((c) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r-1) as usize) {
-                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r) as usize) {
-                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r) as usize) {
-                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r+1) as usize) {
-                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r+1) as usize) {
-                    Some(col) => { match col.get((c) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r+1) as usize) {
-                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-
-                if neighbor == 2 || neighbor == 3 {
-                    out_grid[r as usize][c as usize] = 1;
-                }
-                else {
-                    out_grid[r as usize][c as usize] = 0;
-                }
-            }
-            else if *item == 0 {
-                // DEAD
-
-                match in_grid.get((r-1) as usize) {
-                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r-1) as usize) {
-                    Some(col) => { match col.get((c) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r-1) as usize) {
-                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r) as usize) {
-                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r) as usize) {
-                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r+1) as usize) {
-                    Some(col) => { match col.get((c-1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r+1) as usize) {
-                    Some(col) => { match col.get((c) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-                match in_grid.get((r+1) as usize) {
-                    Some(col) => { match col.get((c+1) as usize) {Some(n) => {if *n == 1 {neighbor+=1}} None => {}} }
-                    None => { }
-                }
-
-                if neighbor == 3 {
-                    out_grid[r as usize][c as usize] = 1;
-                }
-                else {
-                    out_grid[r as usize][c as usize] = 0;
-                }
-            }
-            else {continue}
-
-            c += 1;
-        }
-        r += 1;
-    }
-
-    out_grid
-}
+mod game_of_life;
+use game_of_life::Game;
 
 #[arduino_mega2560::entry]
 fn main() -> ! {
@@ -165,7 +64,7 @@ fn main() -> ! {
     col_6.set_low().void_unwrap();
     col_7.set_low().void_unwrap();
 
-    let mut display: [[u8; 8]; 8] = [
+    let start: [[u8; 8]; 8] = [
         [0,0,0,0,0,0,0,0],
         [0,0,1,0,0,1,0,0],
         [0,1,0,1,1,0,1,0],
@@ -176,7 +75,9 @@ fn main() -> ! {
         [0,0,0,0,0,0,0,0],
     ];
 
-    let mut display_2: [[u8; 8]; 8] = display.clone();
+    let mut game = Game::new(start);
+
+    let mut display: [[u8; 8]; 8] = game.get_field();
 
     let mut count: i16 = 0;
     loop {
@@ -222,10 +123,10 @@ fn main() -> ! {
             }
         }
         if count == 0 {
-            display_2 = make_game(display.clone());
+            game.make_step();
         }
         else if count == 1000 {
-            display = display_2.clone();
+            display = game.get_field();
             count = -1000;
         }
         count += 1;

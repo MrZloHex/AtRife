@@ -25,7 +25,7 @@ clean:
 	$(PACMAN) $(CLEAN)
 	-rm $(HEX)
 
-compile:
+compile: clean
 	$(PACMAN) $(COMPILER) $(COMP_FL)
 
 link:
