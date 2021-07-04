@@ -32,4 +32,4 @@ link:
 	$(AVR_CMP) $(AVR_FL) $(DIR)/$(ELF) $(HEX)
 
 load:
-	$(UPLOADER) $(UPL_FL):$(HEX)
+	sudo $(UPLOADER) $(UPL_FL):$(HEX)
