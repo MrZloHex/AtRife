@@ -67,7 +67,7 @@ fn main() -> ! {
     col_6.set_low().void_unwrap();
     col_7.set_low().void_unwrap();
 
-    let start: [[u8; 8]; 8] = [
+    let _start: [[u8; 8]; 8] = [
         [0,0,0,0,0,0,0,0],
         [0,0,1,0,0,1,0,0],
         [0,1,0,1,1,0,1,0],
